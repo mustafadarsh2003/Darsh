@@ -23,10 +23,7 @@ background-attachment: scroll;
 height:100vh;
 }
 
-  
-
 /* طبقة شفافة خفيفة */
-
 body::before{
 content:"";
 position:fixed;
@@ -37,8 +34,7 @@ height:100%;
 background:rgba(0,0,0,0.4);
 z-index:-1;
 }
-  
-}
+
 /* صفحة الدخول */
 #login{
 position:absolute;
@@ -86,8 +82,8 @@ text-shadow:0 0 15px #000;
 
 /* البوكس */
 .timer-box{
-background:hsl(0, 96%, 18%) ;
-backdrop-filter: blur(30px);
+background:rgba(255,0,100,0.2);
+backdrop-filter: blur(10px);
 padding:20px;
 border-radius:20px;
 display:inline-block;
@@ -202,7 +198,7 @@ alert("حاول تاني 💔");
 }
 
 // تاريخ البداية (13 فبراير 2025)
-var startDate = new Date(2026,1,13);
+var startDate = new Date(2025,1,13);
 
 function updateTimer(){
 
