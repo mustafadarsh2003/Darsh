@@ -187,6 +187,11 @@ animation:fall linear infinite;
 </div>
 
 <script>
+// القلوب
+function createHeart(){
+var heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
 
 // كلمة السر
 function checkPass(){
@@ -196,7 +201,7 @@ if(p==="batoot"){
 document.getElementById("login").style.display="none";
 document.getElementById("main").style.display="block";
 }else{
-alert("حاول تاني 💔");
+alert(" 🤞 حاولى تانى ");
 }
 }
 
@@ -240,11 +245,6 @@ document.getElementById("years").innerHTML = years;
 
 setInterval(updateTimer,1000);
 
-// القلوب
-function createHeart(){
-var heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="❤️";
 
 heart.style.left=Math.random()*100+"vw";
 heart.style.animationDuration=(3+Math.random()*3)+"s";
