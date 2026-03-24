@@ -10,12 +10,14 @@ body{
 margin:0;
 font-family:Arial;
 
-/* الخلفية واضحة */
+/* الخلفية */
 background:url('juiYufKA-fond-decran-amour-35.png') no-repeat center;
 background-size:cover;
 
-
-
+color:white;
+text-align:center;
+height:100vh;
+overflow:hidden;
 }
 
 /* صفحة الدخول */
@@ -128,6 +130,21 @@ animation:fall linear infinite;
 <div class="time">
 
 <div class="unit">
+<div class="num" id="seconds"></div>
+<div class="label">ثانية</div>
+</div>
+
+<div class="unit">
+<div class="num" id="minutes"></div>
+<div class="label">دقيقة</div>
+</div>
+
+<div class="unit">
+<div class="num" id="hours"></div>
+<div class="label">ساعة</div>
+</div>
+
+<div class="unit">
 <div class="num" id="days"></div>
 <div class="label">يوم</div>
 </div>
@@ -140,21 +157,6 @@ animation:fall linear infinite;
 <div class="unit">
 <div class="num" id="years"></div>
 <div class="label">سنة</div>
-</div>
-
-<div class="unit">
-<div class="num" id="hours"></div>
-<div class="label">ساعة</div>
-</div>
-
-<div class="unit">
-<div class="num" id="minutes"></div>
-<div class="label">دقيقة</div>
-</div>
-
-<div class="unit">
-<div class="num" id="seconds"></div>
-<div class="label">ثانية</div>
 </div>
 
 </div>
@@ -177,27 +179,40 @@ alert("كلمة السر غلط ❌");
 }
 
 // تاريخ البداية (13 فبراير 2025)
-var startDate = new Date(2025,1,13);
+var startDate = new Date(2026,1,13);
 
 function updateTimer(){
 
 var now = new Date();
 var diff = now - startDate;
 
-var seconds = Math.floor(diff/1000);
-var minutes = Math.floor(seconds/60);
-var hours = Math.floor(minutes/60);
-var days = Math.floor(hours/24);
+var totalSeconds = Math.floor(diff/1000);
 
-var years = Math.floor(days/365);
-var months = Math.floor((days%365)/30);
+var seconds = totalSeconds % 60;
+var totalMinutes = Math.floor(totalSeconds/60);
 
+var minutes = totalMinutes % 60;
+var totalHours = Math.floor(totalMinutes/60);
+
+var hours = totalHours % 24;
+var totalDays = Math.floor(totalHours/24);
+
+// السنوات
+var years = Math.floor(totalDays / 365);
+
+// الشهور
+var remainingDays = totalDays % 365;
+var months = Math.floor(remainingDays / 30);
+
+// الأيام
+var days = remainingDays % 30;
+
+document.getElementById("seconds").innerHTML = seconds;
+document.getElementById("minutes").innerHTML = minutes;
+document.getElementById("hours").innerHTML = hours;
 document.getElementById("days").innerHTML = days;
 document.getElementById("months").innerHTML = months;
 document.getElementById("years").innerHTML = years;
-document.getElementById("hours").innerHTML = hours%24;
-document.getElementById("minutes").innerHTML = minutes%60;
-document.getElementById("seconds").innerHTML = seconds%60;
 
 }
 
