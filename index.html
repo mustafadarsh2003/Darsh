@@ -9,9 +9,11 @@
 body{
 margin:0;
 font-family:Arial;
-background:url('juIYufKA-fond-decran-amour-35.png
-') no-repeat center;
+
+/* الخلفية واضحة */
+background:url('juiYufKA-fond-decran-amour-35.png') no-repeat center;
 background-size:cover;
+
 color:white;
 text-align:center;
 height:100vh;
@@ -59,15 +61,15 @@ width:100%;
 h1{
 font-size:35px;
 margin-bottom:20px;
+text-shadow:0 0 10px #000;
 }
 
 /* البوكس */
 .timer-box{
-background:rgba(255,255,255,0.1);
+background:rgba(0,0,0,0.5);
 padding:20px;
 border-radius:20px;
 display:inline-block;
-backdrop-filter:blur(10px);
 }
 
 /* الأرقام */
@@ -79,7 +81,7 @@ flex-wrap:wrap;
 }
 
 .unit{
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.6);
 padding:15px;
 border-radius:15px;
 width:80px;
@@ -92,7 +94,6 @@ font-weight:bold;
 
 .label{
 font-size:14px;
-opacity:0.8;
 }
 
 /* القلوب */
@@ -177,7 +178,7 @@ alert("كلمة السر غلط ❌");
 }
 }
 
-// التاريخ (13 فبراير اللي فات)
+// تاريخ البداية (13 فبراير 2025)
 var startDate = new Date(2025,1,13);
 
 function updateTimer(){
@@ -204,7 +205,7 @@ document.getElementById("seconds").innerHTML = seconds%60;
 
 setInterval(updateTimer,1000);
 
-// قلوب
+// القلوب
 function createHeart(){
 var heart=document.createElement("div");
 heart.className="heart";
