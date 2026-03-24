@@ -2,89 +2,108 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>قصتنا ❤️</title>
+<title>💖</title>
 
 <style>
 
-/* الخط */
-@font-face {
-    font-family: 'Khebrat Musamim';
-    src: url('KhebratMusamim.ttf');
-}
-
 body{
 margin:0;
-padding:0;
-font-family:'Khebrat Musamim', Arial;
-background: url('juIYufKA-fond-decran-amour-35.png') no-repeat center center;
-background-size: cover;
+font-family:Arial;
+background:url('bg.jpg') no-repeat center;
+background-size:cover;
 color:white;
-overflow:hidden;
+text-align:center;
 height:100vh;
+overflow:hidden;
 }
 
-/* المحتوى في نص الشاشة */
-.container{
+/* صفحة الدخول */
+#login{
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-text-align:center;
+}
+
+input{
+padding:15px;
+font-size:18px;
+border:none;
+border-radius:10px;
+outline:none;
+}
+
+button{
+padding:15px 20px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#ff4da6;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+/* الصفحة الرئيسية */
+#main{
+display:none;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 width:100%;
 }
 
 /* العنوان */
 h1{
-font-size:70px;
+font-size:35px;
 margin-bottom:20px;
-text-shadow:0 0 15px #000,0 0 25px #ff4da6;
 }
 
-/* الرسالة */
-.message{
-font-size:30px;
-margin-bottom:40px;
-text-shadow:0 0 10px #000;
-}
-
-/* العداد */
-#timer{
-font-size:50px;
-background:rgba(0,0,0,0.5);
-padding:30px 60px;
-border-radius:25px;
+/* البوكس */
+.timer-box{
+background:rgba(255,255,255,0.1);
+padding:20px;
+border-radius:20px;
 display:inline-block;
-box-shadow:0 0 30px rgba(0,0,0,0.8);
+backdrop-filter:blur(10px);
 }
 
-/* الفقاعات */
-.bubble{
-position:absolute;
-border-radius:50%;
-background:rgba(255,255,255,0.2);
+/* الأرقام */
+.time{
 display:flex;
-align-items:center;
 justify-content:center;
-color:white;
-font-size:20px;
-font-weight:bold;
-animation:floatUp linear infinite;
-backdrop-filter: blur(5px);
-border:1px solid rgba(255,255,255,0.3);
+gap:10px;
+flex-wrap:wrap;
 }
 
-@keyframes floatUp{
-0%{
-transform:translateY(100vh) scale(0.5);
-opacity:0;
+.unit{
+background:rgba(0,0,0,0.5);
+padding:15px;
+border-radius:15px;
+width:80px;
 }
-50%{
-opacity:1;
+
+.num{
+font-size:25px;
+font-weight:bold;
 }
-100%{
-transform:translateY(-10vh) scale(1.2);
-opacity:0;
+
+.label{
+font-size:14px;
+opacity:0.8;
 }
+
+/* القلوب */
+.heart{
+position:absolute;
+color:red;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh);}
+100%{transform:translateY(110vh);}
 }
 
 </style>
@@ -92,68 +111,113 @@ opacity:0;
 
 <body>
 
-<div class="container">
-
-<h1>عدّاد ❤️</h1>
-
-<div class="message">
-كل لحظة معاكي هي أجمل لحظة في حياتي
+<!-- صفحة الباسورد -->
+<div id="login">
+<h2>ادخل كلمة السر 💖</h2>
+<input type="password" id="pass" placeholder="كلمة السر">
+<br>
+<button onclick="checkPass()">دخول</button>
 </div>
 
-<div id="timer"></div>
+<!-- الصفحة الرئيسية -->
+<div id="main">
+
+<h1>❤️ بداية عمري معاك ❤️</h1>
+
+<div class="timer-box">
+<div class="time">
+
+<div class="unit">
+<div class="num" id="days"></div>
+<div class="label">يوم</div>
+</div>
+
+<div class="unit">
+<div class="num" id="months"></div>
+<div class="label">شهر</div>
+</div>
+
+<div class="unit">
+<div class="num" id="years"></div>
+<div class="label">سنة</div>
+</div>
+
+<div class="unit">
+<div class="num" id="hours"></div>
+<div class="label">ساعة</div>
+</div>
+
+<div class="unit">
+<div class="num" id="minutes"></div>
+<div class="label">دقيقة</div>
+</div>
+
+<div class="unit">
+<div class="num" id="seconds"></div>
+<div class="label">ثانية</div>
+</div>
+
+</div>
+</div>
 
 </div>
 
 <script>
 
-// تاريخ البداية
-var startDate = new Date(2026, 1, 13, 0, 0, 0);
+// كلمة السر
+function checkPass(){
+var p=document.getElementById("pass").value;
+
+if(p==="batoot"){
+document.getElementById("login").style.display="none";
+document.getElementById("main").style.display="block";
+}else{
+alert("كلمة السر غلط ❌");
+}
+}
+
+// التاريخ (13 فبراير اللي فات)
+var startDate = new Date(2025,1,13);
 
 function updateTimer(){
+
 var now = new Date();
 var diff = now - startDate;
 
-var days = Math.floor(diff/(1000*60*60*24));
-var hours = Math.floor((diff/(1000*60*60))%24);
-var minutes = Math.floor((diff/(1000*60))%60);
-var seconds = Math.floor((diff/1000)%60);
+var seconds = Math.floor(diff/1000);
+var minutes = Math.floor(seconds/60);
+var hours = Math.floor(minutes/60);
+var days = Math.floor(hours/24);
 
-document.getElementById("timer").innerHTML =
-days+" يوم<br>"+
-hours+" ساعة "+
-minutes+" دقيقة "+
-seconds+" ثانية";
+var years = Math.floor(days/365);
+var months = Math.floor((days%365)/30);
+
+document.getElementById("days").innerHTML = days;
+document.getElementById("months").innerHTML = months;
+document.getElementById("years").innerHTML = years;
+document.getElementById("hours").innerHTML = hours%24;
+document.getElementById("minutes").innerHTML = minutes%60;
+document.getElementById("seconds").innerHTML = seconds%60;
+
 }
 
-updateTimer();
 setInterval(updateTimer,1000);
 
-// إنشاء الفقاعات
-function createBubble(){
+// قلوب
+function createHeart(){
+var heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
 
-var bubble=document.createElement("div");
-bubble.className="bubble";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(3+Math.random()*3)+"s";
 
-// رقم عشوائي من 1 لـ 10
-var names = ["رندا ❤️", "بطوط 🐥"];
-bubble.innerHTML = names[Math.floor(Math.random()*names.length)];
-// مكان وحجم عشوائي
-bubble.style.left=Math.random()*100+"vw";
-var size = 80 ;
-bubble.style.width=size+"px";
-bubble.style.height=size+"px";
+document.body.appendChild(heart);
 
-bubble.style.animationDuration=(4+Math.random()*4)+"s";
-
-document.body.appendChild(bubble);
-
-setTimeout(()=>{
-bubble.remove();
-},8000);
-
+setTimeout(()=>{heart.remove();},6000);
 }
 
-setInterval(createBubble,400);
+setInterval(createHeart,500);
 
 </script>
 
