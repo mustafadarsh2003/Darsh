@@ -3,25 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <title>💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 
 body{
 margin:0;
 font-family:Arial;
+color:white;
+text-align:center;
 
-/* حل مشاكل الموبايل */
-background-image: url('https://github.com/mustafadarsh2003/Darsh/blob/main/juIYufKA-fond-decran-amour-35.png?raw=true');
+/* خلفية شغالة على كل الأجهزة */
+background-image: url('https://raw.githubusercontent.com/mustafadarsh2003/Darsh/main/juIYufKA-fond-decran-amour-35.png');
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
-
-/* مهم جدًا للموبايل */
 background-attachment: scroll;
 
 height:100vh;
+}
+
+/* طبقة شفافة خفيفة */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+z-index:-1;
 }
 
 /* صفحة الدخول */
@@ -38,6 +49,7 @@ font-size:18px;
 border:none;
 border-radius:10px;
 outline:none;
+text-align:center;
 }
 
 button{
@@ -45,7 +57,7 @@ padding:15px 20px;
 font-size:18px;
 border:none;
 border-radius:10px;
-background:#ff4da6;
+background:linear-gradient(45deg,#ff4da6,#ff0066);
 color:white;
 cursor:pointer;
 margin-top:10px;
@@ -65,12 +77,13 @@ width:100%;
 h1{
 font-size:35px;
 margin-bottom:20px;
-text-shadow:0 0 10px #000;
+text-shadow:0 0 15px #000;
 }
 
 /* البوكس */
 .timer-box{
-background:red ;
+background:rgba(255,0,100,0.2);
+backdrop-filter: blur(10px);
 padding:20px;
 border-radius:20px;
 display:inline-block;
@@ -89,21 +102,23 @@ background:rgba(0,0,0,0.6);
 padding:15px;
 border-radius:15px;
 width:80px;
+box-shadow:0 0 10px rgba(255,0,100,0.5);
 }
 
 .num{
-font-size:25px;
+font-size:26px;
 font-weight:bold;
 }
 
 .label{
 font-size:14px;
+color:#ffb3d9;
 }
 
 /* القلوب */
 .heart{
 position:absolute;
-color:red;
+color:#ff4da6;
 animation:fall linear infinite;
 }
 
@@ -132,35 +147,35 @@ animation:fall linear infinite;
 
 <div class="timer-box">
 <div class="time">
-  
-  <div class="unit">
-<div class="num" id="years"></div>
-<div class="label">سنة</div>
-</div>
-  
+
 <div class="unit">
-<div class="num" id="months"></div>
-<div class="label">شهر</div>
+<div class="num" id="seconds"></div>
+<div class="label">ثانية</div>
 </div>
 
-  <div class="unit">
-<div class="num" id="days"></div>
-<div class="label">يوم</div>
-
-    <div class="unit">
-<div class="num" id="hours"></div>
-<div class="label">ساعة</div>
-</div>
-</div>
-  
-  <div class="unit">
+<div class="unit">
 <div class="num" id="minutes"></div>
 <div class="label">دقيقة</div>
 </div>
 
 <div class="unit">
-<div class="num" id="seconds"></div>
-<div class="label">ثانية</div>
+<div class="num" id="hours"></div>
+<div class="label">ساعة</div>
+</div>
+
+<div class="unit">
+<div class="num" id="days"></div>
+<div class="label">يوم</div>
+</div>
+
+<div class="unit">
+<div class="num" id="months"></div>
+<div class="label">شهر</div>
+</div>
+
+<div class="unit">
+<div class="num" id="years"></div>
+<div class="label">سنة</div>
 </div>
 
 </div>
@@ -178,12 +193,12 @@ if(p==="batoot"){
 document.getElementById("login").style.display="none";
 document.getElementById("main").style.display="block";
 }else{
-alert(" 🤞 خاولى من تانى ");
+alert("حاول تاني 💔");
 }
 }
 
 // تاريخ البداية (13 فبراير 2025)
-var startDate = new Date(2026,1,13);
+var startDate = new Date(2025,1,13);
 
 function updateTimer(){
 
@@ -230,6 +245,7 @@ heart.innerHTML="❤️";
 
 heart.style.left=Math.random()*100+"vw";
 heart.style.animationDuration=(3+Math.random()*3)+"s";
+heart.style.fontSize=(15+Math.random()*20)+"px";
 
 document.body.appendChild(heart);
 
