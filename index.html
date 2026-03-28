@@ -1,239 +1,199 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>Life Wtih Randa 💌</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بداية عمري معاكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  color:white;
-  text-align:center;
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #3d0a26 0%, #1a0b2e 60%, #000000 100%);
+            z-index: -1;
+        }
 
-  /* خلفية شغالة على كل الأجهزة */
-  background-image: url('https://raw.githubusercontent.com/mustafadarsh2003/Darsh/main/juIYufKA-fond-decran-amour-35.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
+        .light-orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 105, 180, 0.12);
+            filter: blur(100px);
+            border-radius: 50%;
+            animation: move-orb 15s infinite alternate ease-in-out;
+        }
 
-  height:100vh;
-}
+        @keyframes move-orb {
+            from { transform: translate(-20%, -20%) scale(1); }
+            to { transform: translate(30%, 30%) scale(1.2); }
+        }
 
-/* طبقة شفافة خفيفة */
-body::before{
-  content:"";
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.2);
-  z-index:-1;
-}
+        #login-screen {
+            text-align: center;
+            z-index: 100;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
 
-/* صفحة الدخول */
-#login{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-}
+        .password-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
 
-input{
-  padding:15px;
-  font-size:18px;
-  border:none;
-  border-radius:10px;
-  outline:none;
-  text-align:center;
-}
+        .login-btn {
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            transition: 0.3s;
+        }
 
-button{
-  padding:15px 20px;
-  font-size:18px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(45deg,#ff4da6,#ff0066);
-  color:white;
-  cursor:pointer;
-  margin-top:10px;
-}
+        #main-content {
+            display: none;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            z-index: 10;
+        }
 
-/* الصفحة الرئيسية */
-#main{
-  display:none;
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:100%;
-}
+        .number-glow {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+        }
 
-/* العنوان */
-h1{
-  font-size:35px;
-  margin-bottom:20px;
-  text-shadow:0 0 15px #000;
-}
+        .heart-float {
+            position: absolute;
+            pointer-events: none;
+            animation: float-up 5s linear forwards;
+        }
 
-
-/* الأرقام */
-.time{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.unit{
-  background:rgba(255,20,147,0.3);
-  padding:15px;
-  border-radius:15px;
-  width:80px;
-  box-shadow:0 0 15px rgba(255,20,147,0.6);
-}
-
-.num{
-  font-size:26px;
-  font-weight:bold;
-}
-
-.label{
-  font-size:14px;
-  color:#ffb3d9;
-}
-
-/* القلوب */
-.heart{
-  position:absolute;
-  color:#ff4da6;
-  animation:fall linear infinite;
-  z-index: 1; /* خلف العداد */
-}
-
-@keyframes fall{
-  0%{transform:translateY(-10vh);}
-  100%{transform:translateY(110vh);}
-}
-
-</style>
+        @keyframes float-up {
+            from { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- صفحة الباسورد -->
-<div id="login">
-<h2>ادخلي كلمة السر 💖</h2>
-<input type="password" id="pass" placeholder="كلمة السر">
-<br>
-<button onclick="checkPass()">دخولي</button>
-</div>
+    <div class="bg-glow">
+        <div class="light-orb"></div>
+        <div class="light-orb" style="right: 0; bottom: 0;"></div>
+    </div>
 
-<!-- الصفحة الرئيسية -->
-<div id="main">
-<h1>❤️ بداية حياتنا معًا ❤️</h1>
+    <div id="login-screen">
+        <h2 class="text-2xl mb-8 font-bold text-pink-300 leading-relaxed">كلمة السر ايه يا جميل 😉</h2>
+        <input type="password" id="passInput" class="password-input" placeholder="اكتبيها هنا...">
+        <button onclick="checkPassword()" class="login-btn">دخول ❤️</button>
+        <p id="errorMsg" class="text-red-400 mt-4 opacity-0">كلمة السر غلط يا بطوطة جربي تاني 😉</p>
+    </div>
 
-<div class="timer-box">
-  <div class="time">
+    <div id="main-content" class="px-6">
+        <h1 class="text-3xl font-bold mb-2">بداية عمري معاكي ❤️</h1>
+        <p class="text-lg text-pink-200 mb-10">ربنا يديمك ليا طول العمر</p>
 
-  <div class="unit">
-<div class="num" id="years"></div>
-<div class="label">سنة</div>
-</div>
+        <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
+            <div class="flex flex-col"><span id="years" class="number-glow">0</span><span class="text-xs">سنة</span></div>
+            <div class="flex flex-col"><span id="months" class="number-glow">0</span><span class="text-xs">شهر</span></div>
+            <div class="flex flex-col"><span id="days" class="number-glow">0</span><span class="text-xs">يوم</span></div>
+            <div class="flex flex-col"><span id="hours" class="number-glow">0</span><span class="text-xs">ساعة</span></div>
+            <div class="flex flex-col"><span id="minutes" class="number-glow">0</span><span class="text-xs">دقيقة</span></div>
+            <div class="flex flex-col"><span id="seconds" class="number-glow">0</span><span class="text-xs">ثانية</span></div>
+        </div>
 
-  <div class="unit">
-<div class="num" id="months"></div>
-<div class="label">شهر</div>
-</div>
+        <p class="mt-20 text-gray-400 italic text-xs">اقفي هنا شوية متجريش 😂</p>
+    </div>
 
-  <div class="unit">
-<div class="num" id="days"></div>
-<div class="label">يوم</div>
-</div>
+    <script>
+        const SECRET_PASSWORD = "batoot"; 
 
-  <div class="unit">
-<div class="num" id="hours"></div>
-<div class="label">ساعة</div>
-</div>
+        function checkPassword() {
+            const input = document.getElementById('passInput');
+            if (input.value.toLowerCase() === SECRET_PASSWORD) {
+                unlock();
+            } else {
+                document.getElementById('errorMsg').style.opacity = "1";
+            }
+        }
 
-  <div class="unit">
-<div class="num" id="minutes"></div>
-<div class="label">دقيقة</div>
-</div>
+        function unlock() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            document.getElementById('login-screen').style.transform = "translateY(-100vh)";
+            document.getElementById('login-screen').style.opacity = "0";
+            
+            setTimeout(() => {
+                document.getElementById('login-screen').style.display = "none";
+                document.getElementById('main-content').style.display = "block";
+                setTimeout(() => {
+                    document.getElementById('main-content').style.opacity = "1";
+                    startHearts();
+                }, 100);
+            }, 800);
+        }
 
+        const startDate = new Date('February 13, 2026 00:00:00').getTime();
 
-<div class="unit">
-<div class="num" id="seconds"></div>
-<div class="label">ثانية</div>
-</div>
+        function updateCounter() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            const realDiff = diff < 0 ? 0 : diff;
 
-  </div>
-</div>
+            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+            const month = day * 30.44, year = day * 365.25;
 
-</div>
+            document.getElementById('years').innerText = Math.floor(realDiff / year);
+            document.getElementById('months').innerText = Math.floor((realDiff % year) / month);
+            document.getElementById('days').innerText = Math.floor((realDiff % month) / day);
+            document.getElementById('hours').innerText = Math.floor((realDiff % day) / hour);
+            document.getElementById('minutes').innerText = Math.floor((realDiff % hour) / minute);
+            document.getElementById('seconds').innerText = Math.floor((realDiff % minute) / second);
+        }
 
-<script>
-// كلمة السر
-function checkPass(){
-  var p=document.getElementById("pass").value;
-  if(p==="batoot"){
-    document.getElementById("login").style.display="none";
-    document.getElementById("main").style.display="block";
-  }else{
-    alert("حاولي مرة تانية 💔");
-  }
-}
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart-float';
+                heart.innerHTML = ['❤️', '💖', '💕', '✨'][Math.floor(Math.random() * 4)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '110vh';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
 
-// تاريخ البداية (13 فبراير 2025)
-var startDate = new Date(2025,1,13);
-
-function updateTimer(){
-  var now = new Date();
-  var diff = now - startDate;
-
-  var totalSeconds = Math.floor(diff/1000);
-  var seconds = totalSeconds % 60;
-  var totalMinutes = Math.floor(totalSeconds/60);
-  var minutes = totalMinutes % 60;
-  var totalHours = Math.floor(totalMinutes/60);
-  var hours = totalHours % 24;
-  var totalDays = Math.floor(totalHours/24);
-
-  var years = Math.floor(totalDays / 365);
-  var remainingDays = totalDays % 365;
-  var months = Math.floor(remainingDays / 30);
-  var days = remainingDays % 30;
-
-  document.getElementById("seconds").innerHTML = seconds;
-  document.getElementById("minutes").innerHTML = minutes;
-  document.getElementById("hours").innerHTML = hours;
-  document.getElementById("days").innerHTML = days;
-  document.getElementById("months").innerHTML = months;
-  document.getElementById("years").innerHTML = years;
-}
-
-setInterval(updateTimer,1000);
-
-// القلوب
-function createHeart(){
-  var heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="❤️";
-
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.animationDuration=(3+Math.random()*3)+"s";
-  heart.style.fontSize=(20+Math.random()*25)+"px";
-
-  document.body.appendChild(heart);
-
-  setTimeout(()=>{heart.remove();},6000);
-}
-
-setInterval(createHeart,500);
-</script>
-
+        setInterval(updateCounter, 1000);
+        updateCounter();
+    </script>
 </body>
 </html>
