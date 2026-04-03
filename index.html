@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> Life With Randa</title>
+    <title>Life With Randa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -100,7 +100,6 @@
         .card-back { background: white; transform: rotateY(180deg); color: #ad1457; font-size: 1.5rem; }
         .card.matched { visibility: hidden; opacity: 0; pointer-events: none; }
 
-        /* منطقة الفوز داخل نفس المربع */
         #memoryWin {
             min-height: 200px;
             display: flex;
@@ -133,7 +132,6 @@
             75% { transform: translateX(8px); }
         }
 
-        /* تنسيق الملاحظات */
         .note-item {
             background: white;
             border-radius: 20px;
@@ -166,7 +164,7 @@
             <h2 class="text-2xl font-black text-pink-800">شرفتي حياتي و نورتي يا راندا 😍</h2>
         </div>
 
-        <!-- العداد المتحرك -->
+        <!-- 1. العداد الزمني -->
         <div class="widget mb-10">
             <h2 class="text-pink-600 font-black text-lg text-center mb-6">الوقت اللى قضيناه مع بعض 🕐</h2>
             <div class="grid grid-cols-3 gap-3 mb-6">
@@ -182,33 +180,7 @@
             </div>
         </div>
 
-        <!-- لعبة الكروت -->
-        <div class="widget mb-10">
-            <h3 class="font-black text-pink-800 text-center mb-1 text-lg">لعبة تشابه القلوب 🧩</h3>
-            <p id="gameHint" class="text-pink-500 text-[11px] font-bold text-center mb-6 px-2">كل مرة تجمعي فيها القلوب صح، هتظهر لك رسالة مني ليكي.. العبي وشوفي حظك ❤️</p>
-            
-            <div id="memoryGrid" class="grid grid-cols-4 gap-2"></div>
-            
-            <!-- رسالة الفوز تظهر بنفس مساحة المربع -->
-            <div id="memoryWin" class="hidden text-center">
-                <p id="winMessageText" class="font-black text-pink-700 text-lg leading-relaxed mb-8"></p>
-                <button onclick="initMemory()" class="bg-pink-600 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg active:scale-95 transition-all">العبى تانى لرسالة جديدة 🔄</button>
-            </div>
-        </div>
-
-        <!-- قسم الملاحظات (إضافة، تعديل، حذف) -->
-        <div class="widget mb-10">
-            <h2 class="text-pink-600 font-black text-lg text-center mb-4">كلامنا اللي مبيخلصش 💌</h2>
-            <div class="mb-4 space-y-2">
-                <textarea id="noteInput" class="w-full p-4 rounded-2xl border-2 border-pink-50 outline-none focus:border-pink-200 text-sm font-bold h-24 resize-none" placeholder="اكتبي أي كلمة حلوة أو ذكرى لينا هنا..."></textarea>
-                <button id="addNoteBtn" onclick="saveNote()" class="w-full bg-pink-500 text-white p-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-all">سجل يا قلبي ومتنساش ✨</button>
-            </div>
-            <div id="notesContainer" class="max-h-60 overflow-y-auto pr-2">
-                <!-- الملاحظات ستظهر هنا -->
-            </div>
-        </div>
-
-        <!-- الذكريات -->
+        <!-- 2. الذكريات -->
         <div class="widget mb-10">
             <h2 class="text-pink-600 font-black text-lg text-center mb-8">أحلى الذكريات ✨</h2>
             <div class="space-y-6">
@@ -228,6 +200,31 @@
                     <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">12 / 3 / 2026</span>
                     <p class="text-pink-800 font-bold mt-1">رابع مقابله 🎁</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- 3. الملاحظات -->
+        <div class="widget mb-10">
+            <h2 class="text-pink-600 font-black text-lg text-center mb-4">كلامنا اللي مبيخلصش 💌</h2>
+            <div class="mb-4 space-y-2">
+                <textarea id="noteInput" class="w-full p-4 rounded-2xl border-2 border-pink-50 outline-none focus:border-pink-200 text-sm font-bold h-24 resize-none" placeholder="اكتبي أي كلمة حلوة أو ذكرى لينا هنا..."></textarea>
+                <button id="addNoteBtn" onclick="saveNote()" class="w-full bg-pink-500 text-white p-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-all">سجل يا قلبي ومتنساش ✨</button>
+            </div>
+            <div id="notesContainer" class="max-h-60 overflow-y-auto pr-2">
+                <!-- الملاحظات ستظهر هنا -->
+            </div>
+        </div>
+
+        <!-- 4. اللعبة -->
+        <div class="widget mb-10">
+            <h3 class="font-black text-pink-800 text-center mb-1 text-lg">لعبة تشابه القلوب 🧩</h3>
+            <p id="gameHint" class="text-pink-500 text-[11px] font-bold text-center mb-6 px-2">كل مرة تجمعي فيها القلوب صح، هتظهر لك رسالة مني ليكي.. العبي وشوفي حظك ❤️</p>
+            
+            <div id="memoryGrid" class="grid grid-cols-4 gap-2"></div>
+            
+            <div id="memoryWin" class="hidden text-center">
+                <p id="winMessageText" class="font-black text-pink-700 text-lg leading-relaxed mb-8"></p>
+                <button onclick="initMemory()" class="bg-pink-600 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg active:scale-95 transition-all">العبى تانى لرسالة جديدة 🔄</button>
             </div>
         </div>
 
@@ -286,7 +283,6 @@
             updateTimer();
         }
 
-        // --- نظام الملاحظات ---
         function saveNote() {
             const input = document.getElementById('noteInput');
             const text = input.value.trim();
@@ -338,7 +334,6 @@
             });
         }
 
-        // --- العداد ---
         const START_DATE = new Date('February 13, 2026 00:00:00').getTime();
         function updateTimer() {
             const now = new Date().getTime();
@@ -352,7 +347,6 @@
             document.getElementById('s-val').innerText = Math.floor((d%m)/s);
         }
 
-        // --- اللعبة ---
         const icons = ['💖', '🌹', '💍', '🧸', '🌸', '✨'];
         let flipped = [], matchedCount = 0;
 
