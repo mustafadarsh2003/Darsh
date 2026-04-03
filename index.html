@@ -43,7 +43,6 @@
             z-index: 2100;
         }
 
-        /* حركة الإيموجي الثابت 🤫 المتحرك */
         .animated-emoji {
             font-size: 5.5rem;
             display: inline-block;
@@ -60,12 +59,6 @@
             75% { transform: translateY(-5px) rotate(2deg) scale(1.02); }
         }
 
-        .animated-emoji:hover {
-            transform: scale(1.2) rotate(15deg);
-            filter: drop-shadow(0 15px 25px rgba(173, 20, 87, 0.4));
-        }
-
-        /* تأثير الفقاعات والقلوب الكبير */
         .burst-item {
             position: fixed;
             pointer-events: none;
@@ -79,7 +72,6 @@
             100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--tr)); opacity: 0; }
         }
 
-        /* حركة العداد */
         @keyframes timerPulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(173, 20, 87, 0.1); }
             50% { transform: scale(1.04); box-shadow: 0 10px 15px rgba(173, 20, 87, 0.05); }
@@ -115,7 +107,6 @@
         #main-content { opacity: 0; transition: opacity 1.5s ease; }
         #main-content.show { opacity: 1; }
 
-        /* لعبة الكروت */
         .card {
             aspect-ratio: 1/1;
             background: linear-gradient(135deg, #f06292, #ad1457);
@@ -157,13 +148,51 @@
         }
 
         .note-item {
-            background: white;
+            background: linear-gradient(to bottom right, #ffffff, #fff9fb);
             border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-right: 5px solid #f06292;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-right: 6px solid #ad1457;
+            box-shadow: 0 4px 15px rgba(173, 20, 87, 0.05);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .note-item::before {
+            content: '💌';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 2.5rem;
+            opacity: 0.05;
+            transform: rotate(-15deg);
+        }
+
+        .note-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(173, 20, 87, 0.1);
+        }
+
+        .delete-btn {
+            color: #f43f5e;
+            font-weight: 900;
+            padding: 5px 10px;
+            border-radius: 10px;
+            background: #fff1f2;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover { background: #ffe4e6; transform: scale(1.05); }
+
+        .edit-btn {
+            color: #0ea5e9;
+            font-weight: 900;
+            padding: 5px 10px;
+            border-radius: 10px;
+            background: #f0f9ff;
+            transition: all 0.2s;
+        }
+        .edit-btn:hover { background: #e0f2fe; transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -188,16 +217,16 @@
             <h2 class="text-2xl font-black text-pink-800">شرفتي حياتي و نورتي يا راندا 😍</h2>
         </div>
 
-        <!-- 1. العداد الزمني -->
+        <!-- 1. العداد الزمني (من 17/1/2026) -->
         <div class="widget mb-10">
             <h2 class="text-pink-600 font-black text-lg text-center mb-6">الوقت اللى قضيناه مع بعض 🕐</h2>
             <div class="grid grid-cols-3 gap-3 mb-6">
-                <div class="timer-unit" style="animation-delay: 0s;"><span id="y-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">سنة</span></div>
-                <div class="timer-unit" style="animation-delay: 0.2s;"><span id="mo-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">شهر</span></div>
-                <div class="timer-unit" style="animation-delay: 0.4s;"><span id="d-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">يوم</span></div>
-                <div class="timer-unit" style="animation-delay: 0.6s;"><span id="h-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ساعة</span></div>
-                <div class="timer-unit" style="animation-delay: 0.8s;"><span id="m-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">دقيقة</span></div>
-                <div class="timer-unit" style="animation-delay: 1s;"><span id="s-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ثانية</span></div>
+                <div class="timer-unit"><span id="y-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">سنة</span></div>
+                <div class="timer-unit"><span id="mo-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">شهر</span></div>
+                <div class="timer-unit"><span id="d-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">يوم</span></div>
+                <div class="timer-unit"><span id="h-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ساعة</span></div>
+                <div class="timer-unit"><span id="m-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">دقيقة</span></div>
+                <div class="timer-unit"><span id="s-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ثانية</span></div>
             </div>
             <div class="bg-pink-50/60 p-4 rounded-2xl text-center">
                 <p class="text-pink-700 font-bold text-sm">ربنا يديمك ليا ف الدنيا و ف الاخر نبقى صحبة 🤲</p>
@@ -227,14 +256,19 @@
             </div>
         </div>
 
-        <!-- 3. الملاحظات -->
-        <div class="widget mb-10">
-            <h2 class="text-pink-600 font-black text-lg text-center mb-4">كلامنا اللي مبيخلصش 💌</h2>
-            <div class="mb-4 space-y-2">
-                <textarea id="noteInput" class="w-full p-4 rounded-2xl border-2 border-pink-50 outline-none focus:border-pink-200 text-sm font-bold h-24 resize-none" placeholder="اكتبي أي كلمة حلوة أو ذكرى لينا هنا..."></textarea>
-                <button id="addNoteBtn" onclick="saveNote()" class="w-full bg-pink-500 text-white p-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-all">سجل يا قلبي ومتنساش ✨</button>
+        <!-- 3. صندوق الأسرار والمشاعر -->
+        <div class="widget mb-10 overflow-hidden" id="notesWidget">
+            <div class="text-center mb-6">
+                <h2 class="text-pink-700 font-black text-xl mb-1">صندوق أسرارنا 🔒</h2>
+                <p class="text-pink-400 text-[11px] font-bold">لأي كلمة حلوة، سر، أو إحساس عايزة يفضل ذكرى طول العمر</p>
             </div>
-            <div id="notesContainer" class="max-h-60 overflow-y-auto pr-2">
+            
+            <div class="mb-6 space-y-3 relative z-10">
+                <textarea id="noteInput" class="w-full p-5 rounded-3xl border-2 border-pink-100 outline-none focus:border-pink-400 text-pink-900 font-bold h-32 resize-none shadow-inner bg-white/50 transition-all placeholder:text-pink-200" placeholder="اكتبي سرك أو كلمتك هنا..."></textarea>
+                <button id="addNoteBtn" onclick="saveNote()" class="w-full bg-gradient-to-r from-pink-600 to-rose-700 text-white p-4 rounded-2xl font-black text-sm shadow-xl hover:shadow-pink-200 active:scale-95 transition-all">سجل يا تاريخ ✍️</button>
+            </div>
+
+            <div id="notesContainer" class="space-y-4 max-h-[400px] overflow-y-auto px-1">
                 <!-- الملاحظات ستظهر هنا -->
             </div>
         </div>
@@ -284,7 +318,6 @@
         let notes = JSON.parse(localStorage.getItem('randa_notes') || '[]');
         let editingIndex = -1;
 
-        // تأثير "الغمزة" الدوري للإيموجي 🤫
         setInterval(() => {
             const emojiEl = document.getElementById('loginEmoji');
             if (emojiEl && emojiEl.innerText === '🤫') {
@@ -296,7 +329,7 @@
         }, 5000);
 
         function triggerMagicBurst() {
-            const emojis = ['❤️', '✨', '🎈', '💖', '🍭', '🌸', '🫧', '🫧', '🫧'];
+            const emojis = ['❤️', '✨', '💖', '🌸', '🔒', '🗝️'];
             const container = document.body;
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
@@ -305,20 +338,14 @@
                 const item = document.createElement('div');
                 item.className = 'burst-item';
                 item.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                
                 const angle = Math.random() * Math.PI * 2;
                 const distance = 100 + Math.random() * 300;
-                const tx = Math.cos(angle) * distance + 'px';
-                const ty = Math.sin(angle) * distance + 'px';
-                const tr = Math.random() * 360 + 'deg';
-
                 item.style.left = centerX + 'px';
                 item.style.top = centerY + 'px';
-                item.style.setProperty('--tx', tx);
-                item.style.setProperty('--ty', ty);
-                item.style.setProperty('--tr', tr);
+                item.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                item.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                item.style.setProperty('--tr', Math.random() * 360 + 'deg');
                 item.style.animation = `burstOut ${0.6 + Math.random() * 0.8}s cubic-bezier(0.1, 0.8, 0.3, 1) forwards`;
-
                 container.appendChild(item);
                 setTimeout(() => item.remove(), 1500);
             }
@@ -328,18 +355,11 @@
             const val = document.getElementById('passInput').value.toLowerCase();
             if(val === PASS) {
                 triggerMagicBurst();
-                
                 const card = document.getElementById('loginCard');
                 const emoji = document.getElementById('loginEmoji');
-                
                 emoji.innerText = '🤩';
-                emoji.style.animation = 'none';
                 emoji.style.transform = 'scale(2)';
-                
-                card.style.transition = "all 0.5s ease";
-                card.style.transform = "scale(1.1)";
                 card.style.opacity = "0";
-
                 setTimeout(() => {
                     document.getElementById('login-screen').style.transform = "translateY(-100%)";
                     document.getElementById('main-content').classList.remove('hidden');
@@ -348,13 +368,8 @@
                 }, 800);
             } else {
                 document.getElementById('errorMsg').classList.remove('hidden');
-                document.getElementById('loginEmoji').innerText = '🤨';
-                const card = document.getElementById('loginCard');
-                card.style.animation = 'shake 0.4s';
-                setTimeout(() => {
-                    card.style.animation = 'none';
-                    document.getElementById('loginEmoji').innerText = '🤫';
-                }, 1000);
+                document.getElementById('loginCard').style.animation = 'shake 0.4s';
+                setTimeout(() => document.getElementById('loginCard').style.animation = 'none', 1000);
             }
         }
 
@@ -366,21 +381,30 @@
             updateTimer();
         }
 
-        // --- الملاحظات ---
         function saveNote() {
             const input = document.getElementById('noteInput');
             const text = input.value.trim();
             if(!text) return;
+
             if(editingIndex === -1) {
-                notes.unshift({ text, date: new Date().toLocaleString('ar-EG') });
+                const newNote = { 
+                    text, 
+                    date: new Date().toLocaleDateString('ar-EG', {day:'numeric', month:'long', year:'numeric'}) 
+                };
+                notes.unshift(newNote);
             } else {
                 notes[editingIndex].text = text;
                 editingIndex = -1;
-                document.getElementById('addNoteBtn').innerText = "سجل يا قلبي ومتنساش ✨";
+                document.getElementById('addNoteBtn').innerText = "سجل يا تاريخ ✍️";
             }
+            
             localStorage.setItem('randa_notes', JSON.stringify(notes));
             input.value = "";
             renderNotes();
+            
+            const widget = document.getElementById('notesWidget');
+            widget.style.boxShadow = "0 0 40px rgba(173, 20, 87, 0.3)";
+            setTimeout(() => widget.style.boxShadow = "none", 500);
         }
 
         function deleteNote(index) {
@@ -392,23 +416,34 @@
         function editNote(index) {
             editingIndex = index;
             document.getElementById('noteInput').value = notes[index].text;
-            document.getElementById('addNoteBtn').innerText = "تعديل الملاحظة ✅";
+            document.getElementById('addNoteBtn').innerText = "تعديل السر 🗝️";
             document.getElementById('noteInput').focus();
+            window.scrollTo({ top: document.getElementById('notesWidget').offsetTop - 20, behavior: 'smooth' });
         }
 
         function renderNotes() {
             const container = document.getElementById('notesContainer');
-            container.innerHTML = notes.length === 0 ? '<p class="text-center text-pink-300 text-xs py-4">مستني أول كلمة منك هنا يا راندا 🫢</p>' : '';
+            if (!container) return;
+
+            if (notes.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 opacity-40"><p class="text-pink-400 text-sm font-bold">مستني أول سر أو كلمة حلوة منك هنا يا راندا 🔐</p></div>';
+                return;
+            }
+
+            container.innerHTML = ""; 
+            
             notes.forEach((note, index) => {
                 const div = document.createElement('div');
-                div.className = 'note-item shadow-sm';
+                div.className = 'note-item';
                 div.innerHTML = `
-                    <p class="text-pink-800 text-sm font-bold mb-2">${note.text}</p>
-                    <div class="flex justify-between items-center border-t border-pink-50 pt-2">
-                        <span class="text-[9px] text-pink-300 font-bold">${note.date}</span>
-                        <div class="flex gap-3">
-                            <button onclick="editNote(${index})" class="text-blue-400 text-[10px] font-black">تعديل</button>
-                            <button onclick="deleteNote(${index})" class="text-red-400 text-[10px] font-black">حذف</button>
+                    <p class="text-pink-900 font-bold leading-relaxed mb-4 whitespace-pre-wrap">${note.text}</p>
+                    <div class="flex justify-between items-center mt-2 pt-3 border-t border-pink-100/50">
+                        <span class="text-[10px] text-pink-300 font-bold flex items-center gap-1">
+                            <span>📅</span> ${note.date}
+                        </span>
+                        <div class="flex gap-2">
+                            <button onclick="editNote(${index})" class="edit-btn text-[10px]">تعديل</button>
+                            <button onclick="deleteNote(${index})" class="delete-btn text-[10px]">مسح</button>
                         </div>
                     </div>
                 `;
@@ -416,21 +451,14 @@
             });
         }
 
-        // --- العداد (تم التعديل ليكون من 17/1/2026) ---
         const START_DATE = new Date('January 17, 2026 00:00:00').getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const d = now - START_DATE;
             const s=1000, m=s*60, h=m*60, day=h*24, mo=day*30.44, y=day*365.25;
             
-            // في حالة كان التاريخ في المستقبل، نعرض أصفاراً
             if (d < 0) {
-                document.getElementById('y-val').innerText = 0;
-                document.getElementById('mo-val').innerText = 0;
-                document.getElementById('d-val').innerText = 0;
-                document.getElementById('h-val').innerText = 0;
-                document.getElementById('m-val').innerText = 0;
-                document.getElementById('s-val').innerText = 0;
+                ['y','mo','d','h','m','s'].forEach(id => document.getElementById(id+'-val').innerText = 0);
                 return;
             }
 
@@ -442,15 +470,14 @@
             document.getElementById('s-val').innerText = Math.floor((d%m)/s);
         }
 
-        // --- الذاكرة ---
         const icons = ['💖', '🌹', '💍', '🧸', '🌸', '✨'];
         let flipped = [], matchedCount = 0;
 
         function initMemory() {
             const grid = document.getElementById('memoryGrid');
             const winBox = document.getElementById('memoryWin');
-            const winText = document.getElementById('winMessageText');
             const hint = document.getElementById('gameHint');
+            if(!grid) return;
             winBox.classList.add('hidden');
             grid.classList.remove('hidden');
             hint.style.visibility = "visible";
@@ -474,7 +501,7 @@
                                     if(matchedCount === 12) {
                                         grid.classList.add('hidden');
                                         hint.style.visibility = "hidden";
-                                        winText.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+                                        document.getElementById('winMessageText').innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
                                         winBox.classList.remove('hidden');
                                     }
                                 }, 500);
