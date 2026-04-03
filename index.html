@@ -132,6 +132,16 @@
             25% { transform: translateX(-8px); }
             75% { transform: translateX(8px); }
         }
+
+        /* تنسيق الملاحظات */
+        .note-item {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-right: 5px solid #f06292;
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +163,7 @@
     <div id="main-content" class="hidden max-w-md mx-auto p-5 pb-20">
         
         <div class="text-center py-8">
-            <h2 class="text-2xl font-black text-pink-800">شرفتى حياتى و نورتى 😍</h2>
+            <h2 class="text-2xl font-black text-pink-800">شرفتي حياتي و نورتي يا راندا 😍</h2>
         </div>
 
         <!-- العداد المتحرك -->
@@ -183,6 +193,18 @@
             <div id="memoryWin" class="hidden text-center">
                 <p id="winMessageText" class="font-black text-pink-700 text-lg leading-relaxed mb-8"></p>
                 <button onclick="initMemory()" class="bg-pink-600 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg active:scale-95 transition-all">العبى تانى لرسالة جديدة 🔄</button>
+            </div>
+        </div>
+
+        <!-- قسم الملاحظات (إضافة، تعديل، حذف) -->
+        <div class="widget mb-10">
+            <h2 class="text-pink-600 font-black text-lg text-center mb-4">كلامنا اللي مبيخلصش 💌</h2>
+            <div class="mb-4 space-y-2">
+                <textarea id="noteInput" class="w-full p-4 rounded-2xl border-2 border-pink-50 outline-none focus:border-pink-200 text-sm font-bold h-24 resize-none" placeholder="اكتبي أي كلمة حلوة أو ذكرى لينا هنا..."></textarea>
+                <button id="addNoteBtn" onclick="saveNote()" class="w-full bg-pink-500 text-white p-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-all">سجل يا قلبي ومتنساش ✨</button>
+            </div>
+            <div id="notesContainer" class="max-h-60 overflow-y-auto pr-2">
+                <!-- الملاحظات ستظهر هنا -->
             </div>
         </div>
 
@@ -219,7 +241,7 @@
         </div>
 
         <div class="text-center mt-10 text-pink-400 text-xs font-black pb-10">
-            صمم بكل حب لاجلك فقط 🙈
+            صمم بكل حب لأجلك فقط 🙈
         </div>
     </div>
 
@@ -237,6 +259,9 @@
             "كل يوم بيمر وأنا معاكي بحس إني ملكت الدنيا 💖",
             "يا رب يحلي أيامنا الجاية سوا ونفضل مع بعض دايماً 🌸"
         ];
+
+        let editingIndex = -1;
+        let notes = JSON.parse(localStorage.getItem('randa_notes') || '[]');
 
         function checkPass() {
             const val = document.getElementById('passInput').value.toLowerCase();
@@ -256,10 +281,78 @@
         function initEverything() {
             startRain();
             initMemory();
+            renderNotes();
             setInterval(updateTimer, 1000);
             updateTimer();
         }
 
+        // --- نظام الملاحظات ---
+        function saveNote() {
+            const input = document.getElementById('noteInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            if(editingIndex === -1) {
+                notes.unshift({ text, date: new Date().toLocaleString('ar-EG') });
+            } else {
+                notes[editingIndex].text = text;
+                editingIndex = -1;
+                document.getElementById('addNoteBtn').innerText = "سجل يا قلبي ومتنساش ✨";
+            }
+
+            localStorage.setItem('randa_notes', JSON.stringify(notes));
+            input.value = "";
+            renderNotes();
+        }
+
+        function deleteNote(index) {
+            notes.splice(index, 1);
+            localStorage.setItem('randa_notes', JSON.stringify(notes));
+            renderNotes();
+        }
+
+        function editNote(index) {
+            editingIndex = index;
+            document.getElementById('noteInput').value = notes[index].text;
+            document.getElementById('addNoteBtn').innerText = "تعديل الملاحظة ✅";
+            document.getElementById('noteInput').focus();
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notesContainer');
+            container.innerHTML = notes.length === 0 ? '<p class="text-center text-pink-300 text-xs py-4">مستني أول كلمة منك هنا يا راندا 🫢</p>' : '';
+            notes.forEach((note, index) => {
+                const div = document.createElement('div');
+                div.className = 'note-item shadow-sm';
+                div.innerHTML = `
+                    <p class="text-pink-800 text-sm font-bold mb-2">${note.text}</p>
+                    <div class="flex justify-between items-center border-t border-pink-50 pt-2">
+                        <span class="text-[9px] text-pink-300 font-bold">${note.date}</span>
+                        <div class="flex gap-3">
+                            <button onclick="editNote(${index})" class="text-blue-400 text-[10px] font-black">تعديل</button>
+                            <button onclick="deleteNote(${index})" class="text-red-400 text-[10px] font-black">حذف</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- العداد ---
+        const START_DATE = new Date('February 13, 2026 00:00:00').getTime();
+        function updateTimer() {
+            const now = new Date().getTime();
+            const d = now - START_DATE;
+            const s=1000, m=s*60, h=m*60, day=h*24, mo=day*30.44, y=day*365.25;
+            document.getElementById('y-val').innerText = Math.floor(d/y);
+            document.getElementById('mo-val').innerText = Math.floor((d%y)/mo);
+            document.getElementById('d-val').innerText = Math.floor((d%mo)/day);
+            document.getElementById('h-val').innerText = Math.floor((d%day)/h);
+            document.getElementById('m-val').innerText = Math.floor((d%h)/m);
+            document.getElementById('s-val').innerText = Math.floor((d%m)/s);
+        }
+
+        // --- اللعبة ---
         const icons = ['💖', '🌹', '💍', '🧸', '🌸', '✨'];
         let flipped = [], matchedCount = 0;
 
@@ -309,19 +402,6 @@
                 };
                 grid.appendChild(card);
             });
-        }
-
-        const START_DATE = new Date('February 13, 2026 00:00:00').getTime();
-        function updateTimer() {
-            const now = new Date().getTime();
-            const d = now - START_DATE;
-            const s=1000, m=s*60, h=m*60, day=h*24, mo=day*30.44, y=day*365.25;
-            document.getElementById('y-val').innerText = Math.floor(d/y);
-            document.getElementById('mo-val').innerText = Math.floor((d%y)/mo);
-            document.getElementById('d-val').innerText = Math.floor((d%mo)/day);
-            document.getElementById('h-val').innerText = Math.floor((d%day)/h);
-            document.getElementById('m-val').innerText = Math.floor((d%h)/m);
-            document.getElementById('s-val').innerText = Math.floor((d%m)/s);
         }
 
         function startRain() {
