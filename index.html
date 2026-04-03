@@ -3,259 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Life With Randa ❤</title>
+    <title>سر حياتي - رحلتنا</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
+        :root {
+            --primary: #ad1457;
+            --accent: #f06292;
+            --bg-light: #fff5f8;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
             font-family: 'Cairo', sans-serif;
-            background: #000;
-            color: white;
-            margin: 0;
-            /* السماح بالتمرير العمودي فقط عند الحاجة لضمان عمله على الموبايل */
-            overflow-x: hidden;
-            overflow-y: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: var(--bg-light);
             min-height: 100vh;
-            padding: 20px 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #3d0a26 0%, #1a0b2e 60%, #000000 100%);
-            z-index: -1;
+        /* الفواصل بين الأجزاء */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(173, 20, 87, 0.15), transparent);
+            margin: 35px 20px;
         }
 
-        .light-orb {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 105, 180, 0.12);
-            filter: blur(80px);
-            border-radius: 50%;
-            animation: move-orb 15s infinite alternate ease-in-out;
-        }
-
-        @keyframes move-orb {
-            from { transform: translate(-10%, -10%) scale(1); }
-            to { transform: translate(10%, 10%) scale(1.1); }
-        }
-
+        /* شاشة الدخول */
         #login-screen {
-            text-align: center;
-            z-index: 100;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 90%;
-            max-width: 350px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #fff5f8 0%, #fce4ec 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000;
+            transition: all 1s ease;
         }
 
-        .password-input {
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 105, 180, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            color: white;
-            font-size: 1.1rem;
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 40px 25px;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(173, 20, 87, 0.1);
+            width: 90%; max-width: 400px;
             text-align: center;
-            outline: none;
-            width: 100%;
-            margin-bottom: 1.5rem;
-            -webkit-appearance: none; /* لمنع مشاكل التصميم في آيفون */
+            border: 2px solid white;
         }
 
-        .login-btn {
-            background: linear-gradient(45deg, #ff1493, #ff69b4);
-            color: white;
-            font-weight: bold;
-            padding: 12px;
+        /* العداد */
+        .timer-unit {
+            background: white;
+            height: 90px;
+            border-radius: 20px;
+            border: 1px solid rgba(240, 98, 146, 0.1);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(173, 20, 87, 0.02);
+        }
+
+        .timer-val {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #ad1457;
+            line-height: 1;
+        }
+
+        /* قسم "عمرى ما هنساكى" */
+        .never-forget {
+            background: white;
+            padding: 25px;
+            border-radius: 35px;
+            text-align: center;
+            border: 2px dashed #f06292;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(240, 98, 146, 0.05);
+        }
+
+        /* لعبة الكروت */
+        .card {
+            aspect-ratio: 1/1;
+            background: linear-gradient(135deg, #f06292, #ad1457);
             border-radius: 12px;
-            width: 100%;
-            transition: 0.3s;
             cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card.flipped { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-front { color: white; font-size: 1.1rem; }
+        .card-back { background: white; transform: rotateY(180deg); color: #ad1457; font-size: 1.4rem; }
+
+        .widget {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 35px;
+            padding: 25px;
+            border: 1px solid white;
         }
 
-        #main-content {
-            display: none;
+        .hidden { display: none !important; }
+        #main-content { opacity: 0; transition: opacity 1.2s ease; }
+        #main-content.show { opacity: 1; }
+
+        .rain-item {
+            position: fixed; top: -50px; z-index: 5;
+            pointer-events: none; animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        .final-box {
+            background: linear-gradient(135deg, #ad1457, #d81b60);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 40px;
             text-align: center;
-            opacity: 0;
-            transition: opacity 2s ease-in;
-            z-index: 10;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        .number-glow {
-            font-size: 2rem; /* تصغير الخط قليلاً للموبايل */
-            font-weight: 800;
-            text-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
-            display: block;
-        }
-
-        /* تحسين استجابة العداد على الشاشات الكبيرة */
-        @media (min-width: 640px) {
-            .number-glow { font-size: 3rem; }
-        }
-
-        .heart-float {
-            position: absolute;
-            pointer-events: none;
-            animation: float-up 5s linear forwards;
-            z-index: 5;
-        }
-
-        @keyframes float-up {
-            from { transform: translateY(110vh) rotate(0deg); opacity: 1; }
-            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* منع مشاكل اللمس في الموبايل */
-        * {
-            -webkit-tap-highlight-color: transparent;
+            margin-top: 40px;
+            box-shadow: 0 15px 35px rgba(173, 20, 87, 0.25);
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow">
-        <div class="light-orb"></div>
-        <div class="light-orb" style="right: 0; bottom: 0;"></div>
-    </div>
-
-    <!-- واجهة تسجيل الدخول -->
+    <!-- شاشة الدخول -->
     <div id="login-screen">
-        <h2 class="text-xl md:text-2xl mb-6 font-bold text-pink-300 leading-relaxed">كلمة السر ايه يا جميل 😉</h2>
-        <input type="password" id="passInput" class="password-input" placeholder="اكتبيها هنا..." autocomplete="off">
-        <button onclick="checkPassword()" class="login-btn">دخول ❤️</button>
-        <p id="errorMsg" class="text-red-400 mt-4 opacity-0 text-sm">كلمة السر غلط يا بطوطة جربي تاني 😉</p>
+        <div class="login-card">
+            <div class="text-6xl mb-6">🗝️</div>
+            <h1 class="text-2xl font-black text-pink-900 mb-2">اللى جوه.... سر حياتى....</h1>
+            <p class="text-sm font-bold text-pink-700 mb-8 leading-relaxed">مبيعرافوش الا اللى معاه مفتاح قلبى 🔑</p>
+            
+            <input type="password" id="passInput" class="w-full p-4 rounded-2xl border-2 border-pink-50 text-center font-black outline-none mb-4 focus:border-pink-300 text-lg" placeholder="دخلى كلمة السر">
+            <button onclick="checkPass()" class="w-full bg-gradient-to-r from-pink-500 to-pink-700 text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">دخول ❤️</button>
+            <p id="errorMsg" class="text-red-500 mt-4 text-sm font-bold hidden">كلمة السر مش صح يا بطوطة 🫰</p>
+        </div>
     </div>
 
-    <!-- واجهة العداد -->
-    <div id="main-content" class="px-4">
-        <h1 class="text-2xl md:text-4xl font-bold mb-2">بداية عمري معاكي ❤️</h1>
-        <p class="text-md md:text-lg text-pink-200 mb-8">ربنا يديمك ليا طول العمر</p>
+    <!-- المحتوى الرئيسي -->
+    <div id="main-content" class="hidden max-w-md mx-auto p-5 pb-20">
+        
+        <!-- الترحيب -->
+        <div class="text-center py-8">
+            <h2 class="text-2xl font-black text-pink-800 drop-shadow-sm">شرفتى حياتى و نورتى 😍</h2>
+        </div>
 
-        <!-- تغيير الشبكة لتكون مرنة 2 في الصف على الموبايل و 6 على الشاشات الكبيرة -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 md:gap-4">
-            <div class="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
-                <span id="years" class="number-glow">0</span>
-                <span class="text-xs text-pink-100 uppercase tracking-widest">سنة</span>
+        <div class="section-divider"></div>
+
+        <!-- العداد الزمني -->
+        <div class="widget">
+            <h2 class="text-pink-600 font-black text-lg text-center mb-6">الوقت اللى قضيناه مع بعض 🕐</h2>
+            
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="timer-unit"><span id="y-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">سنة</span></div>
+                <div class="timer-unit"><span id="mo-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">شهر</span></div>
+                <div class="timer-unit"><span id="d-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">يوم</span></div>
+                <div class="timer-unit"><span id="h-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ساعة</span></div>
+                <div class="timer-unit"><span id="m-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">دقيقة</span></div>
+                <div class="timer-unit"><span id="s-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ثانية</span></div>
             </div>
-            <div class="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
-                <span id="months" class="number-glow">0</span>
-                <span class="text-xs text-pink-100 uppercase tracking-widest">شهر</span>
-            </div>
-            <div class="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
-                <span id="days" class="number-glow">0</span>
-                <span class="text-xs text-pink-100 uppercase tracking-widest">يوم</span>
-            </div>
-            <div class="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
-                <span id="hours" class="number-glow">0</span>
-                <span class="text-xs text-pink-100 uppercase tracking-widest">ساعة</span>
-            </div>
-            <div class="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
-                <span id="minutes" class="number-glow">0</span>
-                <span class="text-xs text-pink-100 uppercase tracking-widest">دقيقة</span>
-            </div>
-            <div class="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
-                <span id="seconds" class="number-glow">0</span>
-                <span class="text-xs text-pink-100 uppercase tracking-widest">ثانية</span>
+
+            <div class="bg-pink-50/60 p-4 rounded-2xl">
+                <p class="text-pink-700 font-bold text-center text-sm leading-relaxed">
+                    ربنا يديمك ليا ف الدنيا و ف الاخر نبقى صحبة 🤲
+                </p>
             </div>
         </div>
 
-        <p class="mt-16 text-gray-400 italic text-xs pb-10">اقفي هنا شوية متجريش 😂</p>
+        <div class="section-divider"></div>
+
+        <!-- جملة عمرى ما هنساكى -->
+        <div class="never-forget">
+            <h2 class="text-3xl font-black text-pink-800 tracking-tighter">عمرى ما هنساكى ❤️</h2>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- لعبة الكروت -->
+        <div class="widget">
+            <h3 class="font-black text-pink-800 text-center mb-6 text-lg">لعبة تشابه القلوب 🧩</h3>
+            <div id="memoryGrid" class="grid grid-cols-4 gap-2"></div>
+            <div id="memoryWin" class="hidden mt-6 bg-pink-100/50 p-5 rounded-2xl text-center font-bold text-pink-800 text-sm"></div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- أحلى الذكريات -->
+        <div class="widget">
+            <h2 class="text-pink-600 font-black text-lg text-center mb-8">أحلى الذكريات ✨</h2>
+            
+            <div class="space-y-6">
+                <div class="border-r-4 border-pink-400 pr-4">
+                    <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">13 / 2 / 2026</span>
+                    <p class="text-pink-800 font-bold mt-1">أول مقابلة لينا ف تله 😍</p>
+                    <p class="text-gray-500 text-xs italic">استلمتى أوردر [المحافظ]</p>
+                </div>
+
+                <div class="border-r-4 border-pink-400 pr-4">
+                    <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">17 / 2 / 2026</span>
+                    <p class="text-pink-800 font-bold mt-1">ثانى مقابلة 🌹</p>
+                    <p class="text-gray-500 text-xs italic">سلمتك أوردر [فوانيس و مج وهدية شيكولاتات]</p>
+                </div>
+
+                <div class="border-r-4 border-pink-400 pr-4">
+                    <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">26 / 2 / 2026</span>
+                    <p class="text-pink-800 font-bold mt-1">ثالث مقابلة ✨</p>
+                    <p class="text-gray-500 text-xs italic">سلمتك أوردر [مج و ميداليا و استيكر]</p>
+                </div>
+
+                <div class="border-r-4 border-pink-400 pr-4">
+                    <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">12 / 3 / 2026</span>
+                    <p class="text-pink-800 font-bold mt-1">رابع مقابله 🎁</p>
+                    <p class="text-gray-500 text-xs italic">سلمتك أوردر [كوشيه وكارت عيد وبوكس العيد لاختك]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- الخاتمة -->
+        <div class="final-box">
+            <p class="font-bold text-lg leading-loose">
+                هفضل منتظر اليوم اللى ربنا يجمعنا فية ببعض و تكونى حلالى و نصفى الثانى 🥹
+            </p>
+        </div>
+
+        <div class="text-center mt-10 text-pink-300 text-[10px] font-bold">
+            مُصمم بكل حب لـ "بطوط" ❤️
+        </div>
     </div>
 
     <script>
-        const SECRET_PASSWORD = "batoot"; 
-
-        function checkPassword() {
-            const input = document.getElementById('passInput');
-            if (input.value.toLowerCase() === SECRET_PASSWORD) {
-                unlock();
-            } else {
-                document.getElementById('errorMsg').style.opacity = "1";
-                // هزة بسيطة عند الخطأ
-                const screen = document.getElementById('login-screen');
-                screen.style.transform = "translateX(10px)";
-                setTimeout(() => screen.style.transform = "translateX(-10px)", 100);
-                setTimeout(() => screen.style.transform = "translateX(0)", 200);
-            }
-        }
-
-        function unlock() {
-            // تأثير القصاصات
-            confetti({ 
-                particleCount: 100, 
-                spread: 70, 
-                origin: { y: 0.6 },
-                zIndex: 200 
-            });
-
-            const loginScreen = document.getElementById('login-screen');
-            loginScreen.style.transform = "scale(0.8) translateY(-100vh)";
-            loginScreen.style.opacity = "0";
-            
-            setTimeout(() => {
-                loginScreen.style.display = "none";
-                const main = document.getElementById('main-content');
-                main.style.display = "block";
+        const PASS = "batoot";
+        
+        function checkPass() {
+            const val = document.getElementById('passInput').value.toLowerCase();
+            if(val === PASS) {
+                document.getElementById('login-screen').style.opacity = '0';
                 setTimeout(() => {
-                    main.style.opacity = "1";
-                    startHearts();
-                }, 100);
-            }, 600);
-        }
-
-        // تاريخ البداية
-        const startDate = new Date('February 13, 2026 00:00:00').getTime();
-
-        function updateCounter() {
-            const now = new Date().getTime();
-            const diff = now - startDate;
-            const realDiff = diff < 0 ? 0 : diff;
-
-            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
-            const month = day * 30.44, year = day * 365.25;
-
-            document.getElementById('years').innerText = Math.floor(realDiff / year);
-            document.getElementById('months').innerText = Math.floor((realDiff % year) / month);
-            document.getElementById('days').innerText = Math.floor((realDiff % month) / day);
-            document.getElementById('hours').innerText = Math.floor((realDiff % day) / hour);
-            document.getElementById('minutes').innerText = Math.floor((realDiff % hour) / minute);
-            document.getElementById('seconds').innerText = Math.floor((realDiff % minute) / second);
-        }
-
-        function startHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.className = 'heart-float';
-                heart.innerHTML = ['❤️', '💖', '💕', '✨', '🌸'][Math.floor(Math.random() * 5)];
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = '110vh';
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 400);
-        }
-
-        setInterval(updateCounter, 1000);
-        updateCounter();
-
-        // دعم ضغط Enter من الكيبورد
-        document.getElementById('passInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkPassword();
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('main-content').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('main-content').classList.add('show'), 50);
+                    initEverything();
+                }, 500);
+            } else {
+                document.getElementById('errorMsg').classList.remove('hidden');
+                document.getElementById('passInput').value = '';
             }
-        });
+        }
+
+        function initEverything() {
+            startRain();
+            initMemory();
+            setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        const icons = ['💖', '🌹', '💍', '🧸', '🌸', '✨'];
+        let flipped = [], matched = 0;
+
+        function initMemory() {
+            const grid = document.getElementById('memoryGrid');
+            const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
+            grid.innerHTML = '';
+            deck.forEach(icon => {
+                const card = document.createElement('div');
+                card.className = 'card'; card.dataset.val = icon;
+                card.innerHTML = `<div class="card-front text-white font-bold opacity-30 text-xs">سر</div><div class="card-back">${icon}</div>`;
+                card.onclick = () => {
+                    if(flipped.length < 2 && !card.classList.contains('flipped')) {
+                        card.classList.add('flipped');
+                        flipped.push(card);
+                        if(flipped.length === 2) setTimeout(checkMatch, 600);
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function checkMatch() {
+            if(flipped[0].dataset.val === flipped[1].dataset.val) {
+                matched += 2;
+                if(matched === 12) {
+                    const win = document.getElementById('memoryWin');
+                    win.innerText = "أنتِ أغلى سر في حياتي كلها ❤️";
+                    win.classList.remove('hidden');
+                }
+            } else {
+                flipped.forEach(c => c.classList.remove('flipped'));
+            }
+            flipped = [];
+        }
+
+        const START_DATE = new Date('February 13, 2026 00:00:00').getTime();
+        function updateTimer() {
+            const now = new Date().getTime();
+            const d = now - START_DATE;
+            const s=1000, m=s*60, h=m*60, day=h*24, mo=day*30.44, y=day*365.25;
+            document.getElementById('y-val').innerText = Math.floor(d/y);
+            document.getElementById('mo-val').innerText = Math.floor((d%y)/mo);
+            document.getElementById('d-val').innerText = Math.floor((d%mo)/day);
+            document.getElementById('h-val').innerText = Math.floor((d%day)/h);
+            document.getElementById('m-val').innerText = Math.floor((d%h)/m);
+            document.getElementById('s-val').innerText = Math.floor((d%m)/s);
+        }
+
+        function startRain() {
+            setInterval(() => {
+                const item = document.createElement('div');
+                item.className = 'rain-item';
+                item.innerHTML = '❤️';
+                item.style.left = Math.random() * 100 + 'vw';
+                item.style.fontSize = Math.random() * 15 + 10 + 'px';
+                item.style.animationDuration = Math.random() * 2 + 3 + 's';
+                document.body.appendChild(item);
+                setTimeout(() => item.remove(), 5000);
+            }, 700);
+        }
     </script>
 </body>
 </html>
