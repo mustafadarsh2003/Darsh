@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>سر حياتي - رحلتنا</title>
+    <title> Life With Randa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -22,20 +22,13 @@
             scroll-behavior: smooth;
         }
 
-        /* الفواصل بين الأجزاء */
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(173, 20, 87, 0.15), transparent);
-            margin: 35px 20px;
-        }
-
         /* شاشة الدخول */
         #login-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #fff5f8 0%, #fce4ec 100%);
             display: flex; align-items: center; justify-content: center;
             z-index: 2000;
-            transition: all 1s ease;
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
         .login-card {
@@ -49,34 +42,43 @@
             border: 2px solid white;
         }
 
-        /* العداد */
+        .login-text { color: #ad1457 !important; }
+
+        /* حركة العداد المتتالية */
+        @keyframes timerPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(173, 20, 87, 0.1); }
+            50% { transform: scale(1.04); box-shadow: 0 10px 15px rgba(173, 20, 87, 0.05); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(173, 20, 87, 0); }
+        }
+
         .timer-unit {
             background: white;
             height: 90px;
-            border-radius: 20px;
-            border: 1px solid rgba(240, 98, 146, 0.1);
+            border-radius: 24px;
+            border: 2px solid #fce4ec;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            box-shadow: 0 5px 15px rgba(173, 20, 87, 0.02);
+            animation: timerPulse 2s infinite ease-in-out;
         }
 
         .timer-val {
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 900;
             color: #ad1457;
             line-height: 1;
         }
 
-        /* قسم "عمرى ما هنساكى" */
-        .never-forget {
-            background: white;
-            padding: 25px;
+        .widget {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: 35px;
-            text-align: center;
-            border: 2px dashed #f06292;
+            padding: 25px;
+            border: 1px solid white;
             position: relative;
-            box-shadow: 0 10px 25px rgba(240, 98, 146, 0.05);
         }
+
+        #main-content { opacity: 0; transition: opacity 1.5s ease; }
+        #main-content.show { opacity: 1; }
 
         /* لعبة الكروت */
         .card {
@@ -86,7 +88,7 @@
             cursor: pointer;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .card.flipped { transform: rotateY(180deg); }
         .card-front, .card-back {
@@ -94,20 +96,30 @@
             backface-visibility: hidden; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
         }
-        .card-front { color: white; font-size: 1.1rem; }
-        .card-back { background: white; transform: rotateY(180deg); color: #ad1457; font-size: 1.4rem; }
+        .card-front { background: linear-gradient(135deg, #f8bbd0, #f06292); }
+        .card-back { background: white; transform: rotateY(180deg); color: #ad1457; font-size: 1.5rem; }
+        .card.matched { visibility: hidden; opacity: 0; pointer-events: none; }
 
-        .widget {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 35px;
-            padding: 25px;
-            border: 1px solid white;
+        /* منطقة الفوز داخل نفس المربع */
+        #memoryWin {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-in;
         }
 
-        .hidden { display: none !important; }
-        #main-content { opacity: 0; transition: opacity 1.2s ease; }
-        #main-content.show { opacity: 1; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .final-merged-box {
+            background: linear-gradient(135deg, #ad1457, #f06292);
+            color: white;
+            padding: 35px 25px;
+            border-radius: 45px;
+            text-align: center;
+            margin-top: 40px;
+        }
 
         .rain-item {
             position: fixed; top: -50px; z-index: 5;
@@ -115,14 +127,10 @@
         }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
 
-        .final-box {
-            background: linear-gradient(135deg, #ad1457, #d81b60);
-            color: white;
-            padding: 30px 20px;
-            border-radius: 40px;
-            text-align: center;
-            margin-top: 40px;
-            box-shadow: 0 15px 35px rgba(173, 20, 87, 0.25);
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
     </style>
 </head>
@@ -130,124 +138,118 @@
 
     <!-- شاشة الدخول -->
     <div id="login-screen">
-        <div class="login-card">
-            <div class="text-6xl mb-6">🗝️</div>
-            <h1 class="text-2xl font-black text-pink-900 mb-2">اللى جوه.... سر حياتى....</h1>
-            <p class="text-sm font-bold text-pink-700 mb-8 leading-relaxed">مبيعرافوش الا اللى معاه مفتاح قلبى 🔑</p>
+        <div class="login-card" id="loginCard">
+            <div class="text-5xl mb-4">🤫</div>
+            <h1 class="text-2xl font-black mb-2 login-text">اللى جوه.... سر حياتى....</h1>
+            <p class="text-sm font-bold mb-8 leading-relaxed login-text">مبيعرافوش الا اللى معاه مفتاح قلبى 🔑</p>
             
             <input type="password" id="passInput" class="w-full p-4 rounded-2xl border-2 border-pink-50 text-center font-black outline-none mb-4 focus:border-pink-300 text-lg" placeholder="دخلى كلمة السر">
-            <button onclick="checkPass()" class="w-full bg-gradient-to-r from-pink-500 to-pink-700 text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">دخول ❤️</button>
-            <p id="errorMsg" class="text-red-500 mt-4 text-sm font-bold hidden">كلمة السر مش صح يا بطوطة 🫰</p>
+            <button onclick="checkPass()" class="w-full bg-gradient-to-r from-pink-500 to-pink-700 text-white p-4 rounded-2xl font-bold shadow-lg active:scale-90 transition-all text-xl">افتح يا سمسم ❤️</button>
+            <p id="errorMsg" class="text-pink-600 mt-4 text-sm font-bold hidden">حاول تانى يا جميل 🫰</p>
         </div>
     </div>
 
     <!-- المحتوى الرئيسي -->
     <div id="main-content" class="hidden max-w-md mx-auto p-5 pb-20">
         
-        <!-- الترحيب -->
         <div class="text-center py-8">
-            <h2 class="text-2xl font-black text-pink-800 drop-shadow-sm">شرفتى حياتى و نورتى 😍</h2>
+            <h2 class="text-2xl font-black text-pink-800">شرفتى حياتى و نورتى 😍</h2>
         </div>
 
-        <div class="section-divider"></div>
-
-        <!-- العداد الزمني -->
-        <div class="widget">
+        <!-- العداد المتحرك -->
+        <div class="widget mb-10">
             <h2 class="text-pink-600 font-black text-lg text-center mb-6">الوقت اللى قضيناه مع بعض 🕐</h2>
-            
             <div class="grid grid-cols-3 gap-3 mb-6">
-                <div class="timer-unit"><span id="y-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">سنة</span></div>
-                <div class="timer-unit"><span id="mo-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">شهر</span></div>
-                <div class="timer-unit"><span id="d-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">يوم</span></div>
-                <div class="timer-unit"><span id="h-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ساعة</span></div>
-                <div class="timer-unit"><span id="m-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">دقيقة</span></div>
-                <div class="timer-unit"><span id="s-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ثانية</span></div>
+                <div class="timer-unit" style="animation-delay: 0s;"><span id="y-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">سنة</span></div>
+                <div class="timer-unit" style="animation-delay: 0.2s;"><span id="mo-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">شهر</span></div>
+                <div class="timer-unit" style="animation-delay: 0.4s;"><span id="d-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">يوم</span></div>
+                <div class="timer-unit" style="animation-delay: 0.6s;"><span id="h-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ساعة</span></div>
+                <div class="timer-unit" style="animation-delay: 0.8s;"><span id="m-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">دقيقة</span></div>
+                <div class="timer-unit" style="animation-delay: 1s;"><span id="s-val" class="timer-val">0</span><span class="text-[10px] text-pink-400 font-bold">ثانية</span></div>
             </div>
-
-            <div class="bg-pink-50/60 p-4 rounded-2xl">
-                <p class="text-pink-700 font-bold text-center text-sm leading-relaxed">
-                    ربنا يديمك ليا ف الدنيا و ف الاخر نبقى صحبة 🤲
-                </p>
+            <div class="bg-pink-50/60 p-4 rounded-2xl text-center">
+                <p class="text-pink-700 font-bold text-sm">ربنا يديمك ليا ف الدنيا و ف الاخر نبقى صحبة 🤲</p>
             </div>
         </div>
-
-        <div class="section-divider"></div>
-
-        <!-- جملة عمرى ما هنساكى -->
-        <div class="never-forget">
-            <h2 class="text-3xl font-black text-pink-800 tracking-tighter">عمرى ما هنساكى ❤️</h2>
-        </div>
-
-        <div class="section-divider"></div>
 
         <!-- لعبة الكروت -->
-        <div class="widget">
-            <h3 class="font-black text-pink-800 text-center mb-6 text-lg">لعبة تشابه القلوب 🧩</h3>
+        <div class="widget mb-10">
+            <h3 class="font-black text-pink-800 text-center mb-1 text-lg">لعبة تشابه القلوب 🧩</h3>
+            <p id="gameHint" class="text-pink-500 text-[11px] font-bold text-center mb-6 px-2">كل مرة تجمعي فيها القلوب صح، هتظهر لك رسالة مني ليكي.. العبي وشوفي حظك ❤️</p>
+            
             <div id="memoryGrid" class="grid grid-cols-4 gap-2"></div>
-            <div id="memoryWin" class="hidden mt-6 bg-pink-100/50 p-5 rounded-2xl text-center font-bold text-pink-800 text-sm"></div>
+            
+            <!-- رسالة الفوز تظهر بنفس مساحة المربع -->
+            <div id="memoryWin" class="hidden text-center">
+                <p id="winMessageText" class="font-black text-pink-700 text-lg leading-relaxed mb-8"></p>
+                <button onclick="initMemory()" class="bg-pink-600 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg active:scale-95 transition-all">العبى تانى لرسالة جديدة 🔄</button>
+            </div>
         </div>
 
-        <div class="section-divider"></div>
-
-        <!-- أحلى الذكريات -->
-        <div class="widget">
+        <!-- الذكريات -->
+        <div class="widget mb-10">
             <h2 class="text-pink-600 font-black text-lg text-center mb-8">أحلى الذكريات ✨</h2>
-            
             <div class="space-y-6">
                 <div class="border-r-4 border-pink-400 pr-4">
                     <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">13 / 2 / 2026</span>
                     <p class="text-pink-800 font-bold mt-1">أول مقابلة لينا ف تله 😍</p>
-                    <p class="text-gray-500 text-xs italic">استلمتى أوردر [المحافظ]</p>
                 </div>
-
                 <div class="border-r-4 border-pink-400 pr-4">
                     <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">17 / 2 / 2026</span>
                     <p class="text-pink-800 font-bold mt-1">ثانى مقابلة 🌹</p>
-                    <p class="text-gray-500 text-xs italic">سلمتك أوردر [فوانيس و مج وهدية شيكولاتات]</p>
                 </div>
-
                 <div class="border-r-4 border-pink-400 pr-4">
                     <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">26 / 2 / 2026</span>
                     <p class="text-pink-800 font-bold mt-1">ثالث مقابلة ✨</p>
-                    <p class="text-gray-500 text-xs italic">سلمتك أوردر [مج و ميداليا و استيكر]</p>
                 </div>
-
                 <div class="border-r-4 border-pink-400 pr-4">
                     <span class="text-[10px] bg-pink-100 text-pink-600 px-3 py-1 rounded-full font-bold">12 / 3 / 2026</span>
                     <p class="text-pink-800 font-bold mt-1">رابع مقابله 🎁</p>
-                    <p class="text-gray-500 text-xs italic">سلمتك أوردر [كوشيه وكارت عيد وبوكس العيد لاختك]</p>
                 </div>
             </div>
         </div>
 
         <!-- الخاتمة -->
-        <div class="final-box">
-            <p class="font-bold text-lg leading-loose">
+        <div class="final-merged-box shadow-2xl">
+            <p class="font-bold text-lg mb-4 leading-loose">
                 هفضل منتظر اليوم اللى ربنا يجمعنا فية ببعض و تكونى حلالى و نصفى الثانى 🥹
             </p>
+            <div class="w-24 h-px bg-white/30 mx-auto my-4"></div>
+            <h2 class="text-3xl font-black tracking-tighter">عمرى ما هنساكى ❤️</h2>
         </div>
 
-        <div class="text-center mt-10 text-pink-300 text-[10px] font-bold">
-            مُصمم بكل حب لـ "بطوط" ❤️
+        <div class="text-center mt-10 text-pink-400 text-xs font-black pb-10">
+            صمم بكل حب لاجلك فقط 🙈
         </div>
     </div>
 
     <script>
         const PASS = "batoot";
         
+        const loveMessages = [
+            "أنتِ أغلى سر في حياتي كلها ❤️",
+            "ربنا يباركلي فيكي ويحفظك ليا يا روح قلبي 🤲",
+            "ضحكتك هي اللي منورة أيامي بجد 😍",
+            "مفيش في الدنيا حد زيك يا أحلى بطوطة 🌹",
+            "وجودك جنبي هو أكبر نعمة ربنا رزقني بيها ✨",
+            "إنتي مش بس حبيبتي، إنتي حياتي كلها 🙈",
+            "اللهم اجعلها من نصيبي واجمعنا على خير يا رب ❤️",
+            "كل يوم بيمر وأنا معاكي بحس إني ملكت الدنيا 💖",
+            "يا رب يحلي أيامنا الجاية سوا ونفضل مع بعض دايماً 🌸"
+        ];
+
         function checkPass() {
             const val = document.getElementById('passInput').value.toLowerCase();
             if(val === PASS) {
-                document.getElementById('login-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('main-content').classList.remove('hidden');
-                    setTimeout(() => document.getElementById('main-content').classList.add('show'), 50);
-                    initEverything();
-                }, 500);
+                document.getElementById('login-screen').style.transform = "translateY(-100%)";
+                document.getElementById('main-content').classList.remove('hidden');
+                setTimeout(() => document.getElementById('main-content').classList.add('show'), 100);
+                initEverything();
             } else {
                 document.getElementById('errorMsg').classList.remove('hidden');
-                document.getElementById('passInput').value = '';
+                const card = document.getElementById('loginCard');
+                card.style.animation = 'shake 0.4s';
+                setTimeout(() => card.style.animation = 'none', 400);
             }
         }
 
@@ -259,39 +261,54 @@
         }
 
         const icons = ['💖', '🌹', '💍', '🧸', '🌸', '✨'];
-        let flipped = [], matched = 0;
+        let flipped = [], matchedCount = 0;
 
         function initMemory() {
             const grid = document.getElementById('memoryGrid');
-            const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
+            const winBox = document.getElementById('memoryWin');
+            const winText = document.getElementById('winMessageText');
+            const hint = document.getElementById('gameHint');
+            
+            winBox.classList.add('hidden');
+            grid.classList.remove('hidden');
+            hint.classList.remove('invisible');
             grid.innerHTML = '';
+            flipped = [];
+            matchedCount = 0;
+
+            const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
             deck.forEach(icon => {
                 const card = document.createElement('div');
                 card.className = 'card'; card.dataset.val = icon;
-                card.innerHTML = `<div class="card-front text-white font-bold opacity-30 text-xs">سر</div><div class="card-back">${icon}</div>`;
+                card.innerHTML = `<div class="card-front"></div><div class="card-back">${icon}</div>`;
                 card.onclick = () => {
-                    if(flipped.length < 2 && !card.classList.contains('flipped')) {
+                    if(flipped.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
                         card.classList.add('flipped');
                         flipped.push(card);
-                        if(flipped.length === 2) setTimeout(checkMatch, 600);
+                        if(flipped.length === 2) {
+                            if(flipped[0].dataset.val === flipped[1].dataset.val) {
+                                setTimeout(() => {
+                                    flipped.forEach(c => c.classList.add('matched'));
+                                    matchedCount += 2;
+                                    flipped = [];
+                                    if(matchedCount === 12) {
+                                        grid.classList.add('hidden');
+                                        hint.classList.add('invisible');
+                                        winText.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+                                        winBox.classList.remove('hidden');
+                                    }
+                                }, 500);
+                            } else {
+                                setTimeout(() => {
+                                    flipped.forEach(c => c.classList.remove('flipped'));
+                                    flipped = [];
+                                }, 700);
+                            }
+                        }
                     }
                 };
                 grid.appendChild(card);
             });
-        }
-
-        function checkMatch() {
-            if(flipped[0].dataset.val === flipped[1].dataset.val) {
-                matched += 2;
-                if(matched === 12) {
-                    const win = document.getElementById('memoryWin');
-                    win.innerText = "أنتِ أغلى سر في حياتي كلها ❤️";
-                    win.classList.remove('hidden');
-                }
-            } else {
-                flipped.forEach(c => c.classList.remove('flipped'));
-            }
-            flipped = [];
         }
 
         const START_DATE = new Date('February 13, 2026 00:00:00').getTime();
@@ -317,7 +334,7 @@
                 item.style.animationDuration = Math.random() * 2 + 3 + 's';
                 document.body.appendChild(item);
                 setTimeout(() => item.remove(), 5000);
-            }, 700);
+            }, 800);
         }
     </script>
 </body>
